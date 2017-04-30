@@ -1,4 +1,5 @@
-package main.java;
+package main;
+
 
 public class Main {
 
