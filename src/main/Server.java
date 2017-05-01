@@ -1,5 +1,7 @@
 package main;
 
+import main.ideas.Ideas;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -12,10 +14,12 @@ public class Server {
     private String host = "127.0.0.1";
     private ServerSocket server = null;
     private boolean isRunning = true;
+    private Ideas ideas;
 
     public Server(){
         try {
             server = new ServerSocket(port, 100, InetAddress.getByName(host));
+            ideas=new Ideas();
         }
 
         catch (UnknownHostException e) {
@@ -29,6 +33,7 @@ public class Server {
     public Server(String host, int port){
         this.host = host;
         this.port = port;
+        ideas=new Ideas();
         try {
             server = new ServerSocket(port, 100, InetAddress.getByName(host));
         }
@@ -52,7 +57,7 @@ public class Server {
                         Socket client = server.accept();
 
                         System.out.println("Client connecter au serveur");
-                        Thread thread = new Thread(new ReceiveClientRequest(client));
+                        Thread thread = new Thread(new ReceiveClientRequest(client,ideas));
                         thread.start();
 
                     } catch (IOException e) {

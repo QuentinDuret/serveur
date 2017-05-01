@@ -1,5 +1,10 @@
 package main;
 
+import main.commands.Parser;
+import main.commands.PostIdea;
+import main.enums.EnumCommands;
+import main.ideas.Ideas;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -7,11 +12,14 @@ import java.net.SocketException;
 
 public class ReceiveClientRequest implements Runnable{
 
+
     private Socket sock;
     private BufferedInputStream reader = null;
+    private Ideas ideas;
 
-    public ReceiveClientRequest(Socket sock){
+    public ReceiveClientRequest(Socket sock,Ideas ideas){
         this.sock = sock;
+        this.ideas=ideas;
     }
 
     public void run(){
@@ -28,7 +36,10 @@ public class ReceiveClientRequest implements Runnable{
                 String response = read();
 
 
-                System.out.println(response);
+                Parser parser= EnumCommands.valueOf(response.split("\\$")[0]).toCommand();
+
+
+                System.out.println(parser.read(response,ideas));
 
 
                 if(closeConnexion){
