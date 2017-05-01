@@ -6,6 +6,7 @@ import main.enums.EnumCommands;
 import main.ideas.Ideas;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -32,14 +33,12 @@ public class ReceiveClientRequest implements Runnable{
             try {
 
                 reader = new BufferedInputStream(sock.getInputStream());
-
                 String response = read();
-
-
                 Parser parser= EnumCommands.valueOf(response.split("\\$")[0]).toCommand();
 
-
-                System.out.println(parser.read(response,ideas));
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(sock.getOutputStream());
+                bufferedOutputStream.write(parser.read(response,ideas).getBytes());
+                bufferedOutputStream.flush();
 
 
                 if(closeConnexion){
