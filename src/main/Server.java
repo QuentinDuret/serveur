@@ -55,6 +55,7 @@ public class Server {
 
                     try {
                         Socket client = server.accept();
+                        System.out.println("Connecté");
 
                         System.out.println("Client connecter au serveur");
                         Thread thread = new Thread(new ReceiveClientRequest(client,ideas));
