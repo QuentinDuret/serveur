@@ -28,7 +28,7 @@ public class ReceiveClientRequest implements Runnable{
 
         boolean closeConnexion = false;
 
-        while(!sock.isClosed()){
+        //while(!sock.isClosed()){
 
             try {
 
@@ -41,25 +41,20 @@ public class ReceiveClientRequest implements Runnable{
                 bufferedOutputStream.flush();
 
 
-                if(closeConnexion){
-                    System.out.println("commande close  ");
-                    reader = null;
-                    sock.close();
-                    break;
-                }
+
             }catch(SocketException e){
                 System.err.println("LA CONNEXION A ETE INTERROMPUE ! ");
-                break;
+                //break;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
+    //}
 
     private String read() throws IOException{
         String response;
         int stream;
-        byte[] b = new byte[1000];
+        byte[] b = new byte[10000];
         stream = reader.read(b);
         response = new String(b, 0, stream);
         return response;
